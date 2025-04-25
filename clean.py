@@ -1,7 +1,5 @@
 ## Cleaning CHFS 2017 Individual Data
 import pandas as pd
-import os
-
 from _tool import load_source_data, save_cleaned_data
 
 df_ind2017 = load_source_data('chfs2017_ind_202104.dta')
@@ -125,4 +123,4 @@ for k, v in original_labels.items():
     new_labels[k + '_father'] = v + '(父亲)'
     new_labels[k + '_mother'] = v + '(母亲)'
 
-save_cleaned_data(df_ind2017, 'chfs2017_ind_202104_clean.dta')
+save_cleaned_data(df_ind2017, 'chfs2017_income.dta')
