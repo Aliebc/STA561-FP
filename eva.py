@@ -36,7 +36,8 @@ if __name__ == "__main__":
     df_income = load_cleaned_data('chfs2017_income2.dta')
     df_income_applied = apply_original_df(df_income)
     models = get_models()
-    Y = df_income_applied['a3109']
+    Y = df_income_applied['a3109'].astype('int')
+    Y = Y - Y.min()
     X = df_income_applied.drop(columns=['a3109'])
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.1, random_state=42)
     for model in models:

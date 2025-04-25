@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import re
+import shutil
+import gzip
 
 def load_source_data(path) -> pd.DataFrame:
     """
@@ -15,11 +17,21 @@ def load_source_data(path) -> pd.DataFrame:
 
 def load_cleaned_data(path) -> pd.DataFrame:
     """
-    Load the cleaned data from the specified path.
+    Load the cleaned data from the specified path. Supports automatic decompression of .gz files.
+    Works on both Windows and Unix-like systems.
     """
     path2 = os.path.join('clean', path)
+    
+    # If .dta file doesn't exist, try to decompress from .gz
     if not os.path.exists(path2):
-        os.system(f'cd clean && gzip -k -d {path}.gz')
+        gz_path = path2 + '.gz'
+        if os.path.exists(gz_path):
+            with gzip.open(gz_path, 'rb') as f_in:
+                with open(path2, 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+        else:
+            raise FileNotFoundError(f"Neither {path2} nor {gz_path} found.")
+    
     df = pd.read_stata(path2)
     return df
 
