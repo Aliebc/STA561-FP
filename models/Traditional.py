@@ -28,6 +28,7 @@ register_model(
     )
 )
 
+'''
 register_model(
     model_name="LogisticCV",
     model_description="Logistic Regression Classifier with Cross Validation",
@@ -39,3 +40,4 @@ register_model(
         cv=5,
     )
 )
+'''

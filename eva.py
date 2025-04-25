@@ -1,10 +1,7 @@
 from models import get_models
 import pandas as pd
 from _tool import (
-    load_cleaned_data, 
-    filter_columns, 
-    get_target_columns,
-    classify_income_level
+    load_cleaned_data
 )
 from sklearn.model_selection import train_test_split
 # accuracy matric
@@ -24,7 +21,9 @@ def one_hot_column(df, col):
 def apply_original_df(df: pd.DataFrame) -> pd.DataFrame:
     for col in [
         'a3106',
-        'a2019_prov_code'
+        'a2019_prov_code',
+        'f1001',
+        'a2012'
     ]:
         for suffix in ['_father', '_mother']:
             if col + suffix in df.columns:

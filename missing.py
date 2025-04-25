@@ -14,6 +14,13 @@ df_income = load_cleaned_data('chfs2017_income.dta')
 USED_COLUMNS = [
     'a3109(_[a-z]*r)?$',
     'a2022a',
+    'a2012a_',
+    'a2012_',
+    'a2015_',
+    'a2028',
+    'a2029',
+    'f1001a_[a-z]*r$',
+    'a2022k_[a-z]*r$',
     'a3106$',
     'age',
     'a2019_prov_code(_[a-z]*r)?$'
@@ -26,6 +33,8 @@ df_income.update(df_income[get_target_columns(df_income, 'a3109')].map(
 
 for col in get_target_columns(df_income, 'a3109'):
     df_income[col] = df_income[col].fillna(df_income[col].mode()[0])
+    
+
 
 for col in get_target_columns(df_income, 'age'):
     df_income[col] = df_income[col].fillna(df_income[col].mode()[0])
@@ -40,6 +49,13 @@ for col in get_target_columns(df_income, 'a2019_prov_code_'):
 
 df_income.update(df_income[get_target_columns(df_income, 'a2022a')].fillna(0))
 df_income.update(df_income[get_target_columns(df_income, 'a3106')].fillna(7777))
+df_income.update(df_income[get_target_columns(df_income, 'a2012a')].fillna(2))
+df_income.update(df_income[get_target_columns(df_income, 'a2015')].fillna(2))
+df_income.update(df_income[get_target_columns(df_income, 'a2028')].fillna(0))
+df_income.update(df_income[get_target_columns(df_income, 'a2029')].fillna(0))
+df_income.update(df_income[get_target_columns(df_income, 'f1001')].fillna(7777))
+df_income.update(df_income[get_target_columns(df_income, 'a2022k')].fillna(2))
+df_income.update(df_income[get_target_columns(df_income, 'a2012')].fillna(3))
 
 print(df_income)
 
