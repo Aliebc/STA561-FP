@@ -123,4 +123,4 @@ for k, v in original_labels.items():
     new_labels[k + '_father'] = v + '(父亲)'
     new_labels[k + '_mother'] = v + '(母亲)'
 
-save_cleaned_data(df_ind2017, 'chfs2017_income.dta')
+save_cleaned_data(df_ind2017, 'chfs2017_income.dta', labels=new_labels)

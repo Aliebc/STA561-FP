@@ -22,10 +22,10 @@ def load_cleaned_data(path) -> pd.DataFrame:
     df = pd.read_stata(path2)
     return df
 
-def save_cleaned_data(df: pd.DataFrame, path: str):
+def save_cleaned_data(df: pd.DataFrame, path: str, labels: dict = None):
     """
     Save the cleaned data to the specified path.
     """
     path2 = os.path.join('clean', path)
-    df.to_stata(path2, version=118)
+    df.to_stata(path2, version=118, variable_labels=labels)
     os.system(f'cd clean && gzip -kf {path}')
