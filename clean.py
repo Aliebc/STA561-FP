@@ -1,6 +1,6 @@
 ## Cleaning CHFS 2017 Individual Data
 import pandas as pd
-from _tool import load_source_data, save_cleaned_data
+from _tool import load_source_data, save_cleaned_data, filter_columns
 
 df_ind2017 = load_source_data('chfs2017_ind_202104.dta')
 
@@ -35,22 +35,7 @@ TARGET_COLUMNS = [
     'a2015'
 ]
 
-def is_in_target_columns(column):
-    is_in = False
-    for target_column in TARGET_COLUMNS:
-        if column.startswith(target_column):
-            is_in = True
-            break
-    return is_in
-
-#df_ind2017.dropna(subset=['a3109'], inplace=True)
-original_columns = df_ind2017.columns.tolist()
-#print(original_columns)
-new_columns = [col for col in original_columns if is_in_target_columns(col)]
-#(new_columns)
-df_ind2017 = df_ind2017[new_columns]
-
-
+df_ind2017 = filter_columns(df_ind2017, TARGET_COLUMNS)
 
 df_ind2017['age'] = 2017 - df_ind2017['a2005']
 
