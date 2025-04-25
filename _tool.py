@@ -28,6 +28,8 @@ def save_cleaned_data(df: pd.DataFrame, path: str, labels: dict = None):
     Save the cleaned data to the specified path.
     """
     path2 = os.path.join('clean', path)
+    if labels is None:
+        labels = {}
     df.to_stata(path2, version=118, variable_labels=labels)
     os.system(f'cd clean && gzip -kf {path}')
     
@@ -59,8 +61,6 @@ def classify_income_level(monthly_income):
     根据2017年中国收入分档标准,输入月收入,返回所属的收入等级(1-6)
     等级越高，收入越高。
     """
-    if pd.isna(monthly_income):
-        return pd.NA
     annual_income = monthly_income * 12
 
     if annual_income <= 10000:
