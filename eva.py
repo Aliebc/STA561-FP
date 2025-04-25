@@ -24,7 +24,8 @@ def apply_original_df(df: pd.DataFrame) -> pd.DataFrame:
         'a3109',
         'a2019_prov_code',
         'f1001',
-        'a2012'
+        'a2012',
+        'a2015'
     ]:
         for suffix in ['_father', '_mother']:
             if col + suffix in df.columns:

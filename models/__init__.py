@@ -2,7 +2,7 @@ import importlib
 import os
 import glob
 
-from ._models import register_model, get_models
+from ._models import get_models
 
 __all__ = [
     "get_models"

@@ -68,7 +68,7 @@ def filter_columns(df: pd.DataFrame, target_columns: list) -> pd.DataFrame:
     filtered_columns = [col for col in df.columns if is_in_target_columns(col, target_columns)]
     return df[filtered_columns]
 
-def classify_income_level(monthly_income):
+def classify_income_level6(monthly_income):
     """
     根据2017年中国收入分档标准,输入月收入,返回所属的收入等级(1-6)
     等级越高，收入越高。
@@ -87,3 +87,19 @@ def classify_income_level(monthly_income):
         return 5  # 中高收入群体
     else:
         return 6  # 高收入群体
+
+def classify_income_level(monthly_income):
+    """
+    根据2017年中国收入分档标准,输入月收入,返回所属的收入等级(1-6)
+    等级越高，收入越高。
+    """
+    annual_income = monthly_income * 12
+
+    if annual_income <= 25000:
+        return 1  # 低收入群体
+    elif annual_income <= 40000:
+        return 2  # 中收入群体
+    elif annual_income <= 75000:
+        return 3  # 中高收入群体
+    else:
+        return 4  # 高收入群体

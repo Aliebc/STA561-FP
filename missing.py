@@ -23,7 +23,8 @@ USED_COLUMNS = [
     'a2022k_[a-z]*r$',
     'a3106$',
     'age',
-    'a2019_prov_code(_[a-z]*r)?$'
+    'a2019_prov_code(_[a-z]*r)?$',
+    'a3118_\d{1,4}_mc_'
 ]
 df_income = filter_columns(df_income, USED_COLUMNS)
 
@@ -36,6 +37,13 @@ for col in get_target_columns(df_income, 'a3109'):
 
 for col in get_target_columns(df_income, 'age'):
     df_income[col] = df_income[col].fillna(df_income[col].mean())
+    
+for col in get_target_columns(df_income, 'a3106'):
+    df_income[col] = df_income[col].fillna(df_income[col].mode()[0])
+    print(f"Mode of {col}: {df_income[col].mode()[0]}")
+    
+for col in get_target_columns(df_income, 'a3118'):
+    df_income[col] = df_income[col].fillna(0)
 
 for col in get_target_columns(df_income, 'a2019_prov_code_'):
     print(col)
@@ -46,7 +54,7 @@ for col in get_target_columns(df_income, 'a2019_prov_code_'):
 #print(df_income['a3109'].value_counts())
 
 df_income.update(df_income[get_target_columns(df_income, 'a2022a')].fillna(0))
-df_income.update(df_income[get_target_columns(df_income, 'a3106')].fillna(7777))
+#df_income.update(df_income[get_target_columns(df_income, 'a3106')].fillna(7777))
 df_income.update(df_income[get_target_columns(df_income, 'a2012a')].fillna(2))
 df_income.update(df_income[get_target_columns(df_income, 'a2015')].fillna(2))
 df_income.update(df_income[get_target_columns(df_income, 'a2028')].fillna(0))
@@ -56,6 +64,7 @@ df_income.update(df_income[get_target_columns(df_income, 'a2022k')].fillna(2))
 df_income.update(df_income[get_target_columns(df_income, 'a2012')].fillna(3))
 
 print(df_income)
+df_income.info()
 
 save_cleaned_data(
     df_income,
