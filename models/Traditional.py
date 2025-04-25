@@ -1,10 +1,9 @@
+from ._models import register_model
+from functools import partial
 from sklearn.linear_model import (
     LogisticRegression,
     LogisticRegressionCV,
 )
-from sklearn.base import ClassifierMixin,BaseEstimator
-from ._models import register_model
-from functools import partial
 
 register_model(
     model_name="Logistic",
