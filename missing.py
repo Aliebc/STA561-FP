@@ -32,12 +32,10 @@ df_income.update(df_income[get_target_columns(df_income, 'a3109')].map(
 )
 
 for col in get_target_columns(df_income, 'a3109'):
-    df_income[col] = df_income[col].fillna(df_income[col].mode()[0])
-    
-
+    df_income[col] = df_income[col].fillna(10)
 
 for col in get_target_columns(df_income, 'age'):
-    df_income[col] = df_income[col].fillna(df_income[col].mode()[0])
+    df_income[col] = df_income[col].fillna(df_income[col].mean())
 
 for col in get_target_columns(df_income, 'a2019_prov_code_'):
     print(col)

@@ -21,6 +21,7 @@ def one_hot_column(df, col):
 def apply_original_df(df: pd.DataFrame) -> pd.DataFrame:
     for col in [
         'a3106',
+        'a3109',
         'a2019_prov_code',
         'f1001',
         'a2012'
@@ -33,11 +34,12 @@ def apply_original_df(df: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == "__main__":
     df_income = load_cleaned_data('chfs2017_income2.dta')
-    df_income_applied = apply_original_df(df_income)
+    df_income_applied = df_income
     models = get_models()
     Y = df_income_applied['a3109'].astype('int')
     Y = Y - Y.min()
     X = df_income_applied.drop(columns=['a3109'])
+    X = apply_original_df(X)
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.1, random_state=42)
     for model in models:
         print("-" * 40)
