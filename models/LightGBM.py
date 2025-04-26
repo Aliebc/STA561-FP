@@ -17,6 +17,7 @@ register_model(
         colsample_bytree=1.0,
         reg_alpha=0.0,
         reg_lambda=0.0,
-        force_row_wise=True
+        force_row_wise=True,
+        verbosity=-1
     )
 )

@@ -48,5 +48,5 @@ if __name__ == "__main__":
         ins = model.model_class()
         ins.fit(X_train, y_train)
         y = ins.predict(X_test)
-        print(classification_report(y_test, y))
+        print(classification_report(y_test, y, zero_division=0))
         print("-" * 40)
