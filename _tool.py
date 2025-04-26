@@ -104,11 +104,7 @@ def classify_income_level(monthly_income):
     """
     annual_income = monthly_income * 12
 
-    if annual_income <= 25000:
-        return 1  # 低收入群体
-    elif annual_income <= 50000:
-        return 2  # 中收入群体
-    elif annual_income <= 75000:
+    if annual_income <= 60000:
         return 3  # 中高收入群体
     else:
         return 4  # 高收入群体

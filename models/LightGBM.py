@@ -41,7 +41,7 @@ class LightGBMWithGridSearch:
         self.model = GridSearchCV(
             estimator=base_model,
             param_grid=param_grid,
-            scoring='accuracy',  # 或者你换成 'roc_auc', 'f1', 看你的需求
+            scoring='f1',  # 或者你换成 'roc_auc', 'f1', 看你的需求
             cv=3,                # 3折交叉验证
             n_jobs=-1,           # 全部CPU核心
             verbose=1
