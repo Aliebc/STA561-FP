@@ -2,36 +2,45 @@ import os
 import pandas as pd
 import re
 import shutil
-import gzip
+import lzma
 
 def load_source_data(path) -> pd.DataFrame:
     """
-    Load the source data from the specified path.
+    Load the source data from the specified path. Supports automatic decompression of .xz files.
+    Works on both Windows and Unix-like systems.
     """
     path2 = os.path.join('data', path)
+
+    # If .dta file doesn't exist, try to decompress from .xz
     if not os.path.exists(path2):
-        os.system(f'cd data && gzip -k -d {path}.gz')
-    
+        xz_path = path2 + '.xz'
+        if os.path.exists(xz_path):
+            with lzma.open(xz_path, 'rb') as f_in:
+                with open(path2, 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+        else:
+            raise FileNotFoundError(f"Neither {path2} nor {xz_path} found.")
+
     df = pd.read_stata(path2)
     return df
 
 def load_cleaned_data(path) -> pd.DataFrame:
     """
-    Load the cleaned data from the specified path. Supports automatic decompression of .gz files.
+    Load the cleaned data from the specified path. Supports automatic decompression of .xz files.
     Works on both Windows and Unix-like systems.
     """
     path2 = os.path.join('clean', path)
-    
-    # If .dta file doesn't exist, try to decompress from .gz
+
+    # If .dta file doesn't exist, try to decompress from .xz
     if not os.path.exists(path2):
-        gz_path = path2 + '.gz'
-        if os.path.exists(gz_path):
-            with gzip.open(gz_path, 'rb') as f_in:
+        xz_path = path2 + '.xz'
+        if os.path.exists(xz_path):
+            with lzma.open(xz_path, 'rb') as f_in:
                 with open(path2, 'wb') as f_out:
                     shutil.copyfileobj(f_in, f_out)
         else:
-            raise FileNotFoundError(f"Neither {path2} nor {gz_path} found.")
-    
+            raise FileNotFoundError(f"Neither {path2} nor {xz_path} found.")
+
     df = pd.read_stata(path2)
     return df
 
@@ -43,7 +52,7 @@ def save_cleaned_data(df: pd.DataFrame, path: str, labels: dict = None):
     if labels is None:
         labels = {}
     df.to_stata(path2, version=118, variable_labels=labels)
-    os.system(f'cd clean && gzip -kf {path}')
+    os.system(f'cd clean && xz -T8 -kf {path}')
     
 def is_in_target_columns(column, target_columns):
     is_in = False
@@ -97,9 +106,17 @@ def classify_income_level(monthly_income):
 
     if annual_income <= 25000:
         return 1  # 低收入群体
-    elif annual_income <= 40000:
+    elif annual_income <= 50000:
         return 2  # 中收入群体
     elif annual_income <= 75000:
         return 3  # 中高收入群体
     else:
         return 4  # 高收入群体
+    
+def get_cityid(countyid):
+    municipalities = {'11', '12', '31', '50'}
+    countyid_str = str(countyid)
+    if countyid_str[:2] in municipalities:
+        return countyid_str[:2] + '0000'
+    else:
+        return countyid_str[:4] + '00'

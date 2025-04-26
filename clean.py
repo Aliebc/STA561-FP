@@ -1,12 +1,20 @@
 ## Cleaning CHFS 2017 Individual Data
 import pandas as pd
-from _tool import load_source_data, save_cleaned_data, filter_columns
+from _tool import (
+    load_source_data, 
+    save_cleaned_data, 
+    filter_columns,
+    get_cityid
+)
 import json
 
 df_ind2017 = load_source_data('chfs2017_ind_202104.dta')
+df_ind2017_county = load_source_data('chfs2017_ind_county.dta')
+df_income2017 = load_source_data('INCOME2017.dta')
 
 TARGET_COLUMNS = [
     'hhid_2017',
+    'pline',
     'hhead',
     'a2001',
     'a2003',
@@ -37,6 +45,24 @@ TARGET_COLUMNS = [
 ]
 
 df_ind2017 = filter_columns(df_ind2017, TARGET_COLUMNS)
+
+df_ind2017_county = df_ind2017_county[[
+    'hhid_2017',
+    'pline',
+    'countyid',
+]]
+
+df_income2017 = df_income2017[[
+    'Ctnm_id',
+    'Eect13'
+]]
+df_income2017.rename(columns={'Ctnm_id': 'cityid', 'Eect13': 'cincome'}, inplace=True)
+
+df_ind2017_county['cityid'] = df_ind2017_county['countyid'].apply(get_cityid)
+
+df_ind2017_county = pd.merge(df_ind2017_county, df_income2017, on='cityid', how='left')
+
+df_ind2017 = pd.merge(df_ind2017, df_ind2017_county, on=['hhid_2017', 'pline'], how='left')
 
 df_ind2017['age'] = 2017 - df_ind2017['a2005']
 
@@ -86,15 +112,17 @@ def apply_family(df: pd.DataFrame):
 #df_ind2017 = df_ind2017.groupby('hhid_2017').apply(apply_family)
 
 df_ind2017_1 = df_ind2017[df_ind2017['a2001'].isin([1, 3])]
-df_ind2017_1['hhid_2017'] = df_ind2017_1['hhid_2017'].astype(str) + '_1'
+df_ind2017_1['hhid_2017'] = df_ind2017_1['hhid_2017'].astype(str)
 
 df_ind2017_2 = df_ind2017[df_ind2017['a2001'].isin([2, 4])]
-df_ind2017_2['hhid_2017'] = df_ind2017_2['hhid_2017'].astype(str) + '_2'
+df_ind2017_2['hhid_2017'] = df_ind2017_2['hhid_2017'].astype(str)
 df_ind2017_2['a2001'] = df_ind2017_2['a2001'].replace({2: 1, 4: 3})
 
 df_ind2017_1f = apply_family(df_ind2017_1)
 df_ind2017_2f = apply_family(df_ind2017_2)
 df_ind2017 = pd.concat([df_ind2017_1f, df_ind2017_2f], axis=0)
+
+df_ind2017 = df_ind2017.sort_values(by=['hhid_2017', 'pline'])
 
 print(df_ind2017)
 
@@ -102,6 +130,9 @@ print(df_ind2017)
 reader = pd.io.stata.StataReader('data/chfs2017_ind_202104.dta')
 original_labels = reader.variable_labels()
 original_labels['age'] = '年龄'
+original_labels['countyid'] = '县级行政区划代码'
+original_labels['cityid'] = '市级行政区划代码'
+original_labels['cincome'] = '市级收入水平'
 new_labels = {}
 
 for k, v in original_labels.items():

@@ -3,6 +3,7 @@ from sklearn.impute import KNNImputer
 import pandas as pd
 from _tool import (
     load_cleaned_data, 
+    load_source_data,
     filter_columns, 
     get_target_columns,
     classify_income_level,
@@ -11,8 +12,10 @@ from _tool import (
 
 df_income = load_cleaned_data('chfs2017_income.dta')
 
+#df_income = df_income[df_income['a3109'] < 75000/12]
+
 USED_COLUMNS = [
-    'a3109(_[a-z]*r)?$',
+    'a3109(_[a-z]*r)?$',    #核心收入
     'a2022a',
     'a2012a_',
     'a2012_',
@@ -23,8 +26,10 @@ USED_COLUMNS = [
     'a2022k_[a-z]*r$',
     'a3106$',
     'age',
+    'cincome',
     'a2019_prov_code(_[a-z]*r)?$',
-    'a3118_\d{1,4}_mc_'
+    'a3118_\d{1,4}_mc_',
+    'a2003$'
 ]
 df_income = filter_columns(df_income, USED_COLUMNS)
 
@@ -36,6 +41,9 @@ for col in get_target_columns(df_income, 'a3109'):
     df_income[col] = df_income[col].fillna(10)
 
 for col in get_target_columns(df_income, 'age'):
+    df_income[col] = df_income[col].fillna(df_income[col].mean())
+    
+for col in get_target_columns(df_income, 'cincome'):
     df_income[col] = df_income[col].fillna(df_income[col].mean())
     
 for col in get_target_columns(df_income, 'a3106'):
