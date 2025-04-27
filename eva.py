@@ -61,7 +61,7 @@ if __name__ == "__main__":
     print(X.columns)
     json.dump(X.columns.tolist(), open('output/columns.json', 'w'), indent=4)
     X = PCA(n_components=8).fit_transform(X)
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=41)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
     X_train, y_train = SMOTE(random_state=42).fit_resample(X_train, y_train)
     df_res = pd.DataFrame()
     result_list = []
