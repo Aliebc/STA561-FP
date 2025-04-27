@@ -84,6 +84,7 @@ if __name__ == "__main__":
         df_res = df_res.sort_values(by='ROC AUC', ascending=False)
         df_res = df_res.reset_index(drop=True)
         print(df_res)
+        df_res['Model Name'] = df_res['Model Name'].str.replace('_', R'\_')
         df_res.to_latex('output/eva.tex', index=False, float_format='%.3f')
         exit(0)
     for model in get_models():
