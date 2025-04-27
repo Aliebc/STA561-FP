@@ -4,3 +4,5 @@ lightgbm
 catboost
 xgboost
 imblearn
+flask
+flask_cors
