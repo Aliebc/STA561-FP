@@ -2,10 +2,11 @@ import importlib
 import os
 import glob
 
-from ._models import get_models
+from ._models import get_models, find_model
 
 __all__ = [
-    "get_models"
+    "get_models",
+    "find_model",
 ]
 
 current_dir = os.path.dirname(__file__)

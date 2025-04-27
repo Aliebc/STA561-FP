@@ -23,6 +23,7 @@ register_model(
     )
 )
 
+
 class LightGBMWithGridSearch:
     def __init__(self, random_state=42):
         base_model = LGBMClassifier(
@@ -62,9 +63,10 @@ class LightGBMWithGridSearch:
         else:
             return None
 
-# 注册新模型
+'''
 register_model(
     model_name="LightGBM-AutoTuned",
     model_description="LightGBM Classifier with GridSearchCV hyperparameter tuning",
     model_class=LightGBMWithGridSearch
 )
+'''

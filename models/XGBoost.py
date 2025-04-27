@@ -14,7 +14,7 @@ register_model(
     model_description="XGBoost Classifier with GridSearchCV",
     model_class=partial(
         GridSearchCV,
-        estimator=XGBClassifier(use_label_encoder=False, eval_metric='logloss'),
+        estimator=XGBClassifier(eval_metric='logloss'),
         param_grid={
             'n_estimators': [100, 200, 300],
             'max_depth': [4, 6, 8, 10],

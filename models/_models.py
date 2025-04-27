@@ -29,3 +29,9 @@ def register_model(
 
 def get_models() -> List[ModelEntry]:
     return _models
+
+def find_model(model_name: str) -> ModelEntry:
+    for model in _models:
+        if model.model_name == model_name:
+            return model
+    raise ValueError(f"Model {model_name} not found.")

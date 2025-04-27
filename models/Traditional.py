@@ -10,21 +10,9 @@ register_model(
     model_description="Logistic Regression Classifier",
     model_class=partial(
         LogisticRegression,
-        max_iter=20000,
+        max_iter=100000,
         penalty='l2',
         random_state=42,
-    )
-)
-
-register_model(
-    model_name="Logistic (Balanced)",
-    model_description="Logistic Regression Classifier",
-    model_class=partial(
-        LogisticRegression,
-        max_iter=20000,
-        penalty='l2',
-        random_state=42,
-        class_weight='balanced'
     )
 )
 
