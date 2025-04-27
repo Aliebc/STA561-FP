@@ -39,5 +39,21 @@ Below are the evaluation results for different machine learning models, assessed
 | MLP                                    |      0.725 |           0.213 |        0.354 |          0.266 |     0.622 |
 | Dummy                                  |      0.86  |           0     |        0     |          0     |     0.5   |
 
+---
 
+## Project Structure
+
+This project is divided into two main components:
+
+- **Backend (Python-based):**  
+  The backend includes all data processing, feature engineering, model training, and evaluation logic. The complete backend source code is available at:  
+  [https://github.com/Aliebc/STA561-FP](https://github.com/Aliebc/STA561-FP)
+
+- **Frontend (Web Application):**  
+  The frontend is a lightweight web interface that allows users to interact with the trained model, upload new data, and visualize predictions. The frontend source code is available at:  
+  [https://github.com/Aliebc/STA561-FP-WEB](https://github.com/Aliebc/STA561-FP-WEB)
+
+Together, the backend and frontend create an integrated system that not only performs predictions but also makes the results accessible and interpretable for end users.
+
+---
 
