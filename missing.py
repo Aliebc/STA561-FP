@@ -7,7 +7,8 @@ from _tool import (
     filter_columns, 
     get_target_columns,
     classify_income_level,
-    save_cleaned_data
+    save_cleaned_data,
+    get_stata_labels
 )
 
 df_income = load_cleaned_data('chfs2017_income.dta')
@@ -77,5 +78,5 @@ df_income.info()
 save_cleaned_data(
     df_income,
     'chfs2017_income2.dta',
-    None
+    get_stata_labels()
 )

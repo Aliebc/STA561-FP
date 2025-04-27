@@ -59,6 +59,8 @@ df_income2017 = df_income2017[[
 ]]
 df_income2017.rename(columns={'Ctnm_id': 'cityid', 'Eect13': 'cincome'}, inplace=True)
 
+save_cleaned_data(df_income2017, 'INCOME2017C.dta')
+
 df_ind2017_county['cityid'] = df_ind2017_county['countyid'].apply(get_cityid)
 
 df_ind2017_county = pd.merge(df_ind2017_county, df_income2017, on='cityid', how='left')

@@ -51,7 +51,7 @@ def save_cleaned_data(df: pd.DataFrame, path: str, labels: dict = None):
     path2 = os.path.join('clean', path)
     if labels is None:
         labels = {}
-    df.to_stata(path2, version=118, variable_labels=labels)
+    df.to_stata(path2, version=118, variable_labels=labels, write_index=False)
     os.system(f'cd clean && xz -T8 -kf {path}')
     
 def is_in_target_columns(column, target_columns):
@@ -116,3 +116,21 @@ def get_cityid(countyid):
         return countyid_str[:2] + '0000'
     else:
         return countyid_str[:4] + '00'
+
+def get_stata_labels() -> dict:
+    """
+    Get the variable labels from the DataFrame.
+    """
+    reader = pd.io.stata.StataReader('data/chfs2017_ind_202104.dta')
+    original_labels = reader.variable_labels()
+    original_labels['age'] = '年龄'
+    original_labels['countyid'] = '县级行政区划代码'
+    original_labels['cityid'] = '市级行政区划代码'
+    original_labels['cincome'] = '市级收入水平'
+    new_labels = {}
+
+    for k, v in original_labels.items():
+        new_labels[k] = v
+        new_labels[k + '_father'] = v + '(父亲)'
+        new_labels[k + '_mother'] = v + '(母亲)'
+    return new_labels

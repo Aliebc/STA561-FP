@@ -57,7 +57,7 @@ if __name__ == "__main__":
     Y = Y - Y.min()
     X = df_income_applied.drop(columns=['a3109'])
     X = apply_original_df(X)
-    #X = select_columns(X, Y)
+    X = select_columns(X, Y)
     print(X.columns)
     json.dump(X.columns.tolist(), open('output/columns.json', 'w'), indent=4)
     X = PCA(n_components=8).fit_transform(X)
