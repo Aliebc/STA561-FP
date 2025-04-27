@@ -85,7 +85,10 @@ if __name__ == "__main__":
         df_res = df_res.reset_index(drop=True)
         print(df_res)
         df_res['Model Name'] = df_res['Model Name'].str.replace('_', R'\_')
-        df_res.to_latex('output/eva.tex', index=False, float_format='%.3f')
+        for col in df_res.select_dtypes(include=[np.number]).columns:
+            df_res[col] = df_res[col].apply(lambda x: f"{x:.3f}")
+        df_res.to_latex('output/eva.tex', index=False, escape=False)
+        df_res.to_markdown('output/eva.md', index=False)
         exit(0)
     for model in get_models():
         print("-" * 40)
