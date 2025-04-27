@@ -79,6 +79,13 @@ if __name__ == "__main__":
         models_df = models_df.sort_values(by='ROC AUC', ascending=False)
         print(models_df)
         exit(0)
+    if len(sys.argv) > 1 and sys.argv[1] == 'report':
+        df_res = pd.read_csv('output/eva.csv')
+        df_res = df_res.sort_values(by='ROC AUC', ascending=False)
+        df_res = df_res.reset_index(drop=True)
+        print(df_res)
+        df_res.to_latex('output/eva.tex', index=False, float_format='%.3f')
+        exit(0)
     for model in get_models():
         print("-" * 40)
         print(f"Model Name: {model.model_name}")
